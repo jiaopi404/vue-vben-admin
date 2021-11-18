@@ -3,6 +3,7 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
+        <a-button type="success"> 另一个按钮 </a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -59,7 +60,7 @@
           title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
-          fixed: undefined,
+          // fixed: 'undefined', 默认右边？
         },
       });
 

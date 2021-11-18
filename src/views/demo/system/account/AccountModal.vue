@@ -27,7 +27,12 @@
         },
       });
 
+      // 此处是一个回调
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+        console.log(
+          '🚀 ~ file: AccountModal.vue ~ line 31 ~ const[registerModal,{setModalProps,closeModal}]=useModalInner ~ data',
+          data,
+        );
         resetFields();
         setModalProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;

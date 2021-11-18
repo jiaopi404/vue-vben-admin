@@ -68,6 +68,41 @@ function createConfirm(options: ModalOptionsEx): ConfirmOptions {
   };
   return Modal.confirm(opt) as unknown as ConfirmOptions;
 }
+/**
+ * promise 化，但是依然不优雅
+ * @param options 同上
+ * @param cb 同上
+ * @returns Promise<void>
+ */
+function createConfirmPromise(options: Omit<ModalOptionsEx, 'onOk' | 'onCancel'>, cb: () => Promise<void>) {
+  const iconType = options.iconType || 'warning';
+  Reflect.deleteProperty(options, 'iconType');
+  const opt: ModalFuncProps = {
+    centered: true,
+    icon: getIcon(iconType),
+    ...options,
+    content: renderContent(options),
+  };
+  return new Promise<void>((resolve, reject) => {
+    Modal.confirm({
+      ...opt,
+      onOk: () => {
+        resolve();
+        return new Promise<void>(async(resolveInner, rejectInner) => {
+          try {
+            await cb();
+            resolveInner();
+          } catch (err) {
+            rejectInner(err);
+          }
+        });
+      },
+      onCancel: () => {
+        reject();
+      },
+    }) as unknown as ConfirmOptions
+  });
+}
 
 const getBaseOptions = () => {
   const { t } = useI18n();
@@ -119,5 +154,6 @@ export function useMessage() {
     createErrorModal,
     createInfoModal,
     createWarningModal,
+    createConfirmPromise,
   };
 }
