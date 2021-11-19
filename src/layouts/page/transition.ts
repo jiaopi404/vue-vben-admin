@@ -6,6 +6,7 @@ export interface DefaultContext {
   route: RouteLocation;
 }
 
+// TODO-jiaopi404: 此处方法，可能要想办法接收 to 和 from，来判断是不是来自 redirect（or有其他的方法？），进而区分要不要 transition
 export function getTransitionName({
   route,
   openCache,
