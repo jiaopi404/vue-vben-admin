@@ -1,13 +1,15 @@
 <template>
-  <LoginFormTitle v-show="getShow" class="enter-x" />
+  <LoginFormTitle v-show="getShow" />
+  <!-- <LoginFormTitle v-show="getShow" class="enter-x" /> -->
   <Form
-    class="p-4 enter-x"
+    class="p-4"
     :model="formData"
     :rules="getFormRules"
     ref="formRef"
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
+    <!-- class="p-4 enter-x" -->
     <FormItem name="account" class="enter-x">
       <Input
         size="large"
