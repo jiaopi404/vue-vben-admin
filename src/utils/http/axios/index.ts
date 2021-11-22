@@ -96,6 +96,7 @@ const transform: AxiosTransform = {
     }
     const params = config.params || {};
     const data = config.data || false;
+    console.log('params, data: ', JSON.stringify(params), JSON.stringify(data));
     formatDate && data && !isString(data) && formatRequestDate(data);
     if (config.method?.toUpperCase() === RequestEnum.GET) {
       if (!isString(params)) {
@@ -115,8 +116,17 @@ const transform: AxiosTransform = {
         } else {
           // 非GET请求如果没有提供data，则将params视为data
           // TODO-jiaopi404: 这个改变
-          config.data = data;
-          config.params = undefined;
+          if (
+            Reflect.has(config, 'data') &&
+            (typeof config.data === 'string' || typeof config.data === 'number')
+          ) {
+            // 处理 data 为 单纯的 数字 / 字符串 的情况
+            config.data = data;
+            config.params = undefined;
+          } else {
+            config.data = params;
+            config.params = undefined;
+          }
         }
         if (joinParamsToUrl) {
           config.url = setObjToUrlParams(
